@@ -12,7 +12,12 @@ const app = express();
 
 app.use(cookieParser());
 app.use(cors({
-  origin: "https://20250519t195523-dot-e-13-450704.uc.r.appspot.com",
+  origin: function (origin, callback) {
+    if (!origin || origin.endsWith(".appspot.com")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    },
   credentials: true,
 }));
 app.use(express.json());
